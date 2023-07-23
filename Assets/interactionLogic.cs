@@ -6,6 +6,7 @@ public class interactionLogic : MonoBehaviour
 {
     private GameObject gameManagerObj;
     private GameObject playerObject;
+    private NPCDialogue NPCDialogue;
 
     public enum InteractionMode { Character, Pickup };
 
@@ -22,6 +23,7 @@ public class interactionLogic : MonoBehaviour
 
     [Header("Objects")]
     public GameObject InteractionZone;
+    public GameObject dialogueManagerObj;
     public float radius = 2f;
 
     // Start is called before the first frame update
@@ -29,6 +31,8 @@ public class interactionLogic : MonoBehaviour
     {
         gameManagerObj = GameObject.Find("GameManager");
         gameManagerObj.GetComponent<GameManager>();
+        NPCDialogue = gameObject.GetComponent<NPCDialogue>();
+        dialogueManagerObj = GameObject.Find("DialogueManager");
 
         playerObject = GameObject.Find("Player");
         GameObject leftWaypoint = new GameObject();
@@ -59,6 +63,7 @@ public class interactionLogic : MonoBehaviour
         {
             Debug.Log("Initiating conversation with " + displayName);
             InteractionZone.SetActive(true);
+            dialogueManagerObj.GetComponent<inkExample>().StartStory();
             if (playerObject.transform.position.x <= transform.position.x)
             {
                 playerObject.GetComponent<playerMovement>().destination = new Vector3(gameObject.transform.position.x - radius, gameObject.transform.position.y, gameObject.transform.position.z);

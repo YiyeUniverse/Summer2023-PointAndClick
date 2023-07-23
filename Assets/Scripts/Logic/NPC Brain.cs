@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class NPCBrain : MonoBehaviour
 {
     NavMeshAgent agent;
-    public GameObject NPCdestination;
+    public GameObject NPCDestination;
 
     // Start is called before the first frame update
     void Start()
@@ -17,9 +17,9 @@ public class NPCBrain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (NPCdestination != null)
+        if (NPCDestination != null)
         {
-        agent.SetDestination(NPCdestination.transform.position);
+        agent.SetDestination(NPCDestination.transform.position);
         }
     }
 }

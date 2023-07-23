@@ -6,6 +6,13 @@ using UnityEngine.AI;
 public class playerMovement : MonoBehaviour
 {
     NavMeshAgent agent;
+    private Vector3 move;
+    private CharacterController controller;
+
+    [Header ("Basics")]
+    public float playerSpeed = 4f;
+
+    [Header ("The Boring Stuff")]
     public bool canControl = true;
     public bool canWalk = true;
     public bool canInteract = true;
@@ -28,6 +35,8 @@ public class playerMovement : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         stateDrivenCamera.GetComponent<CinemachineSwitcher>().mediumTrackingCamera();
+        controller = gameObject.GetComponent<CharacterController>();
+        agent.enabled = true;
     }
 
     // Update is called once per frame
@@ -45,6 +54,7 @@ public class playerMovement : MonoBehaviour
             //Check if player can be controlled
             if (canControl == true && canWalk == true)
             {
+                
                 //MovePlayer
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
@@ -52,8 +62,12 @@ public class playerMovement : MonoBehaviour
                     marker.SetActive(true);  
                     marker.transform.position = hit.point;
                 }
+                
+
+                Debug.Log("STAB!");
             }
         }
+
 
         //Interact
         if (Input.GetMouseButtonDown(0))
@@ -70,7 +84,7 @@ public class playerMovement : MonoBehaviour
                         OpenRadialMenu();
                         canControl=false;
                         canInteract = false;
-                        agent.enabled = false;
+                        agent.enabled = true;
                         
                     }
                 }
@@ -85,7 +99,8 @@ public class playerMovement : MonoBehaviour
             radial.SetActive(true);
             radial.transform.position = (Input.mousePosition);
             radial.GetComponent<radialScript>().showRadial();  
-            marker.SetActive(false);       
+            marker.SetActive(false); 
+            canWalk = false;
         }
 
     //Reactivate Player after Closing Menu    
@@ -95,6 +110,7 @@ public class playerMovement : MonoBehaviour
         stateDrivenCamera.GetComponent<CinemachineSwitcher>().mediumTrackingCamera();
         canControl = true;
         canInteract = true;
+        canWalk = true;
         agent.enabled = true;
         destination = new Vector3(0,0,0);
     }
