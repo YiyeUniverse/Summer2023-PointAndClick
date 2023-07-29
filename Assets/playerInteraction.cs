@@ -59,13 +59,13 @@ public class playerInteraction : MonoBehaviour
             stateDrivenCamera.GetComponent<CinemachineSwitcher>().conversationCamera();
 
             //Show Text panel
-                Invoke("showTextPanel", 1.6f);
+                Invoke("callNPCDialogue", 1.6f);
         }
     }
 
-    void showTextPanel()
+    void callNPCDialogue()
     {
-        textPanel.SetActive(true);
+        otherParty.GetComponent<interactionLogic>().DialogueLogic();
     }
     //Exit Interaction
     public void exitInteraction()

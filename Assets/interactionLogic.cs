@@ -58,12 +58,11 @@ public class interactionLogic : MonoBehaviour
             playerObject.GetComponent<playerMovement>().ReactivatePlayer();
         }
 
-        //Looking
+        //Sort interaction zones for talking
         public void TalkLogic()
         {
             Debug.Log("Initiating conversation with " + displayName);
             InteractionZone.SetActive(true);
-            dialogueManagerObj.GetComponent<inkExample>().StartStory();
             if (playerObject.transform.position.x <= transform.position.x)
             {
                 playerObject.GetComponent<playerMovement>().destination = new Vector3(gameObject.transform.position.x - radius, gameObject.transform.position.y, gameObject.transform.position.z);
@@ -75,6 +74,20 @@ public class interactionLogic : MonoBehaviour
             }
         }
 
+        //Sort Dialogue
+        public void DialogueLogic()
+        {
+            dialogueManagerObj.GetComponent<inkExample>().StartStory();
+            dialogueManagerObj.GetComponent<inkExample>().showDialogueGUI();
+            deactivateInteraction();
+        }
+
+        //Deactivate Interaction Zones
+        private void deactivateInteraction()
+        {
+            InteractionZone.SetActive(false);
+
+        }
         //Looking
         public void AttackLogic()
         {

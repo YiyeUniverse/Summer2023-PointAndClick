@@ -10,12 +10,15 @@ public class inkExample : MonoBehaviour
 {
     public static event Action<Story> OnCreateStory;
 
-    [SerializeField]
+    [Header ("Ink GameObjects")]
+	[SerializeField]
 	private TextAsset inkJSONAsset = null;
 	public Story story;
 
 	[SerializeField]
 	private Canvas canvas = null;
+	[SerializeField]
+	private GameObject dialoguePanel = null;
 
 	// UI Prefabs
 	[SerializeField]
@@ -26,6 +29,14 @@ public class inkExample : MonoBehaviour
 	private GameObject choicePanel = null;
 
     [SerializeField] private GameObject player;
+
+	[Header ("Animation Settings")]
+	[SerializeField] private float dialogueEntryDuration;
+	[SerializeField] private LeanTweenType dialogueEntryEaseType;
+	[SerializeField] private float choiceDelay = 1f;
+	[SerializeField] private float choiceEntryDuration;
+	[SerializeField] private LeanTweenType choiceEntryEaseType;
+
 
     private TextMeshProUGUI dialogueText;
 	
@@ -40,6 +51,19 @@ public class inkExample : MonoBehaviour
 		//StartStory();
 	}
 
+	//GUI Things
+		//Show Dialouge GUI
+		public void showDialogueGUI()
+		{
+			dialoguePanel.SetActive(true);
+		}
+
+		//Hide Dialouge GUI
+		public void hideDialogueGUI()
+		{
+			dialoguePanel.SetActive(false);
+		}
+
 	// Creates a new Story object with the compiled story which we can then play!
 	public void StartStory () {
 		story = new Story (inkJSONAsset.text);
@@ -53,7 +77,7 @@ public class inkExample : MonoBehaviour
 	void RefreshView () {
 		// Remove all the UI on screen
 		RemoveChildren ();
-		
+
 		// Read all the content until we can't continue any more
 		while (story.canContinue) {
 			// Continue gets the next line of the story
@@ -62,6 +86,8 @@ public class inkExample : MonoBehaviour
 			text = text.Trim();
 			// Display the text on screen!
 			CreateContentView(text);
+		//Animate
+			animateEntry();
 		}
 
 		// Display all the choices, if there are any!
@@ -78,6 +104,7 @@ public class inkExample : MonoBehaviour
 		// If we've read all the content and there's no choices, the story is finished! END OF STORY
 		else {
             player.GetComponent<playerMovement>().ReactivatePlayer();
+			hideDialogueGUI();
 			/*
             Button choice = CreateChoiceView("End of story.\nRestart?");
 			choice.onClick.AddListener(delegate{
@@ -88,6 +115,23 @@ public class inkExample : MonoBehaviour
 		}
 	}
 
+	//Animate text
+	void animateEntry()
+	{
+		//Text Entry
+		dialogueTextObject.transform.localScale = new Vector3(1.25f,1.25f,1.25f);
+        LeanTween.scale(dialogueTextObject.GetComponent<RectTransform>(), new Vector3(1,1,1), dialogueEntryDuration).setEase(dialogueEntryEaseType);
+
+		//Choice entry
+		choicePanel.SetActive(false);
+		//Invoke("animateChoices", dialogueEntryDuration+choiceDelay);
+	}
+	public void animateChoices()
+	{
+		choicePanel.SetActive(true);
+		choicePanel.transform.localScale = new Vector3(1f,0f,0f);
+		LeanTween.scale(choicePanel.GetComponent<RectTransform>(), new Vector3(1,1,1), choiceEntryDuration).setEase(choiceEntryEaseType);
+	}
 	// When we click the choice button, tell the story to choose that choice!
 	void OnClickChoiceButton (Choice choice) {
 		story.ChooseChoiceIndex (choice.index);
