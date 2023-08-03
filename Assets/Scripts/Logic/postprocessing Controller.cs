@@ -19,6 +19,13 @@ public class postprocessingController : MonoBehaviour
     public float defaultFocalLength = 65;
     public float distanceToFocus;
 
+    [Header ("Vignette")]
+    public float defaultVignetteIntensity = 0.3f;
+    public float strongerVignetteIntensity = 0.6f;
+    private float vignetteIntensity;
+    public float vignetteSpeed = 0.2f;
+    private float vignetteTimeElapsed;
+
     //Private Variables
     private DepthOfField dof;
     private Vignette vignetteBlur;
@@ -30,6 +37,8 @@ public class postprocessingController : MonoBehaviour
     {
         postProcessingVolume.profile.TryGet(out dof);
         postProcessingVolume.profile.TryGet(out vignetteBlur);
+
+        IntensifyVignette();
     }
 
     // Update is called once per frame
@@ -49,7 +58,18 @@ public class postprocessingController : MonoBehaviour
             dof.focalLength.value = (distanceToFocus * 10f)-20f;
             }
         }
-
         
+    }
+    
+    //Intensify Vignette
+    public void IntensifyVignette()
+    {
+        //vignetteBlur.intensity.value = strongerVignetteIntensity;
+
+    }
+    //Reset Vignette
+    public void ResetVignette()
+    {
+        //vignetteBlur.intensity.value = defaultVignetteIntensity;
     }
 }

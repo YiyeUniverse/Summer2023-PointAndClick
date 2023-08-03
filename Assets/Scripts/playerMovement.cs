@@ -92,7 +92,7 @@ public class playerMovement : MonoBehaviour
         }
     }
 
-
+    
     // Open Radial Menu
     void OpenRadialMenu()
         {
@@ -113,6 +113,15 @@ public class playerMovement : MonoBehaviour
         canWalk = true;
         agent.enabled = true;
         destination = new Vector3(0,0,0);
+    }
+
+    //Deactivate player
+    public void DeactivatePlayer()
+    {
+        canControl = false;
+        canInteract = false;
+        canWalk = false;
+        //agent.enabled = false; 
     }
 
     //Walk towards Interactable

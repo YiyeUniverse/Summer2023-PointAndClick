@@ -37,6 +37,13 @@ public class inkExample : MonoBehaviour
 	[SerializeField] private float choiceEntryDuration;
 	[SerializeField] private LeanTweenType choiceEntryEaseType;
 
+	[Header ("Other Stuff")]
+	public string currentKnot = "StartKnot";
+	public GameObject postProc;
+	private  postprocessingController postProcessingController;
+
+
+
 
     private TextMeshProUGUI dialogueText;
 	
@@ -44,6 +51,7 @@ public class inkExample : MonoBehaviour
     void Start()
     {
         dialogueText = dialogueTextObject.GetComponent<TextMeshProUGUI>();
+		postProcessingController = postProc.GetComponent<postprocessingController>();
     }
     void Awake () {
 		// Remove the default message
@@ -55,19 +63,26 @@ public class inkExample : MonoBehaviour
 		//Show Dialouge GUI
 		public void showDialogueGUI()
 		{
-			dialoguePanel.SetActive(true);
+			choicePanel.SetActive(false);
+			Invoke("displayDialoguePanel", 0.15f);
+			postProcessingController.IntensifyVignette();
 		}
+			void displayDialoguePanel(){dialoguePanel.SetActive(true);}
 
 		//Hide Dialouge GUI
 		public void hideDialogueGUI()
 		{
 			dialoguePanel.SetActive(false);
+			choicePanel.SetActive(false);
+			postProcessingController.ResetVignette();
 		}
 
 	// Creates a new Story object with the compiled story which we can then play!
 	public void StartStory () {
 		story = new Story (inkJSONAsset.text);
         if(OnCreateStory != null) OnCreateStory(story);
+		if (currentKnot == null) {currentKnot = "StartKnot";}
+		story.ChoosePathString(currentKnot);
 		RefreshView();
 	}
 	
@@ -77,6 +92,8 @@ public class inkExample : MonoBehaviour
 	void RefreshView () {
 		// Remove all the UI on screen
 		RemoveChildren ();
+
+		choicePanel.SetActive(false);
 
 		// Read all the content until we can't continue any more
 		while (story.canContinue) {
@@ -126,6 +143,10 @@ public class inkExample : MonoBehaviour
 		choicePanel.SetActive(false);
 		//Invoke("animateChoices", dialogueEntryDuration+choiceDelay);
 	}
+	
+	// Trigger choice animation
+	//public void triggerChoiceAnimation(){Invoke("animateChoices", 0.15f);}
+
 	public void animateChoices()
 	{
 		choicePanel.SetActive(true);

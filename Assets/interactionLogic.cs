@@ -26,6 +26,10 @@ public class interactionLogic : MonoBehaviour
     public GameObject dialogueManagerObj;
     public float radius = 2f;
 
+    [Header("Text")]
+    public string dialogueKnot;
+    public string lookKnot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +59,13 @@ public class interactionLogic : MonoBehaviour
         public void LookLogic()
         {
             Debug.Log("I am looking at " + displayName);
-            playerObject.GetComponent<playerMovement>().ReactivatePlayer();
+            //playerObject.GetComponent<playerMovement>().ReactivatePlayer();
+            if (lookKnot == null){lookKnot = "LookKnot";}
+            dialogueManagerObj.GetComponent<inkExample>().currentKnot = this.lookKnot;
+            dialogueManagerObj.GetComponent<inkExample>().StartStory();
+            dialogueManagerObj.GetComponent<inkExample>().showDialogueGUI();
+            playerObject.GetComponent<playerMovement>().DeactivatePlayer();
+            
         }
 
         //Sort interaction zones for talking
@@ -77,6 +87,8 @@ public class interactionLogic : MonoBehaviour
         //Sort Dialogue
         public void DialogueLogic()
         {
+            if (dialogueKnot == null){dialogueKnot = "TalkKnot";}
+            dialogueManagerObj.GetComponent<inkExample>().currentKnot = this.dialogueKnot;
             dialogueManagerObj.GetComponent<inkExample>().StartStory();
             dialogueManagerObj.GetComponent<inkExample>().showDialogueGUI();
             deactivateInteraction();

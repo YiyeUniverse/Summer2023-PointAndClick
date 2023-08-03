@@ -14,9 +14,9 @@ public class UIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Cursor.visible = false;
+        Cursor.visible = false;
         changePointerStyle();
-        pointer.SetActive(false);
+        pointer.SetActive(true);
 
         //Dialogue Window
         dialogueText = talkText.GetComponent<TextMeshProUGUI>();
@@ -26,9 +26,15 @@ public class UIScript : MonoBehaviour
     void Update()
     {
         pointer.transform.position = (Input.mousePosition);
+
+        //Hide pointer on click
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.visible = false;
+        }
     }
 
-    
+
 
     //Change Pointer
     void changePointerStyle()
