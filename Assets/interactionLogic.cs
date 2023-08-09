@@ -14,6 +14,7 @@ public class interactionLogic : MonoBehaviour
     public string displayName;
 
     [Header("Interactions")]
+    public bool canHover = true;
     public bool canLook = false;
     public bool canTalk = false;
     public bool canAttack = false;

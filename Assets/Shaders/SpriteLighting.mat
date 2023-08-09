@@ -55,8 +55,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _OutlineActive: 0
+    - _OutlineThickness: 5.53
     - _QueueControl: 0
     - _QueueOffset: 0
     - _alphaclip: 0.5
-    m_Colors: []
+    m_Colors:
+    - _OutlineColor: {r: 2.670157, g: 2.5569296, b: 0, a: 1}
   m_BuildTextureStacks: []

@@ -17,6 +17,7 @@ public class playerMovement : MonoBehaviour
     public bool canWalk = true;
     public bool canInteract = true;
     public GameObject marker;
+    public GameObject selectionZone;
     public GameObject radial;
     public interactionLogic interactionLogic;
     public Vector3 destination;
@@ -48,29 +49,29 @@ public class playerMovement : MonoBehaviour
         Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
         
         
+        
+        
         //CheckMousePosition
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(0))
         {
             //Check if player can be controlled
             if (canControl == true && canWalk == true)
             {
                 
                 //MovePlayer
+
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
                     agent.SetDestination(hit.point);
                     marker.SetActive(true);  
                     marker.transform.position = hit.point;
                 }
-                
-
-                Debug.Log("STAB!");
             }
         }
 
 
         //Interact
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
                 {
@@ -90,6 +91,7 @@ public class playerMovement : MonoBehaviour
                 }
             
         }
+
     }
 
     
