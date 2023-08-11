@@ -10,6 +10,9 @@ public class playerInteraction : MonoBehaviour
     public GameObject stateDrivenCamera;
     public GameObject CameraFocus;
 
+    [Header ("Temporary Objects")]
+    public GameObject interactionTarget;
+
     [Header ("Debug Objects")]
     public GameObject textPanel;
 
@@ -36,8 +39,10 @@ public class playerInteraction : MonoBehaviour
         }
     }
 
+    //Check what interactions are possible
+
     
-            //OnTalkTrigger
+    //OnTalkTrigger
     void OnTriggerEnter(Collider other) 
     {
         if (other.gameObject.tag == "InteractionZone") 

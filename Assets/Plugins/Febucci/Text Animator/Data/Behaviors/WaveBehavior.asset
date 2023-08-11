@@ -15,4 +15,4 @@ MonoBehaviour:
   tagID: wave
   baseAmplitude: 1
   baseFrequency: 0.58
-  baseWaveSize: 0
+  baseWaveSize: 0.05

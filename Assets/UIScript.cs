@@ -6,8 +6,11 @@ using TMPro;
 public class UIScript : MonoBehaviour
 {
     public GameObject pointer;
+    public GameObject pointerText;
+    public string pointerTextText;
     public GameObject talkWindow;
     public GameObject talkText;
+    public bool radialActive = false;
 
     private TextMeshProUGUI dialogueText;
 
@@ -42,6 +45,20 @@ public class UIScript : MonoBehaviour
         return;
     }
 
+    //Show and hide Pointer Text
+    public void showPointerText()
+    {
+        pointerText.SetActive(true);
+        pointerText.GetComponent<TextMeshProUGUI>().text = pointerTextText;
+    }
+    public void hidePointerText()
+    {
+        pointerText.SetActive(false);
+    }
+
+    //Deal with Radial
+    public void radialisActive(){radialActive = true;}
+    public void radialInactive(){radialActive = false;}
 
 
 }

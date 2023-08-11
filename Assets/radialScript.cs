@@ -11,6 +11,7 @@ public class radialScript : MonoBehaviour
     public GameObject RadialText;
     public GameObject interactionTarget;
     public GameObject player;
+        public GameObject canvas;
 
     [Header ("Prefabs")]
     public GameObject LookButton;
@@ -39,6 +40,8 @@ public class radialScript : MonoBehaviour
     private RadialLayoutGroup buttonScript;
     private AudioSource audioData;
 
+
+
     //private float minimum = 0f;
     //private float maximum = 360f;
 
@@ -57,6 +60,9 @@ public class radialScript : MonoBehaviour
         RadialButtons.GetComponent<RadialLayoutGroup>().Arc = 360f;
         if (interactionTarget != null)
         {
+            //Hide popup
+            canvas.GetComponent<UIScript>().hidePointerText();
+            canvas.GetComponent<UIScript>().radialisActive();
             //Update text
             RadialText.GetComponent<TextMeshProUGUI>().text = interactionTarget.GetComponent<interactionLogic>().displayName; 
             RadialText.transform.localScale = new Vector3(0,0,0);
@@ -150,7 +156,7 @@ public class radialScript : MonoBehaviour
     public void hideRadial()
     {
         animateRadialButtonsExit();
-        //gameObject.SetActive(false);
+        canvas.GetComponent<UIScript>().radialInactive();
     }
     //Destroy the radial
      void deactivateRadial()

@@ -7,6 +7,7 @@ public class interactionLogic : MonoBehaviour
     private GameObject gameManagerObj;
     private GameObject playerObject;
     private NPCDialogue NPCDialogue;
+    private GameObject canvas;
 
     public enum InteractionMode { Character, Pickup };
 
@@ -21,6 +22,7 @@ public class interactionLogic : MonoBehaviour
     public bool canThrowAt = false;
     public bool canPickUp = false;
     public bool canOtherInteraction = false;
+    public string defaultBehaviourType;
 
     [Header("Objects")]
     public GameObject InteractionZone;
@@ -38,6 +40,7 @@ public class interactionLogic : MonoBehaviour
         gameManagerObj.GetComponent<GameManager>();
         NPCDialogue = gameObject.GetComponent<NPCDialogue>();
         dialogueManagerObj = GameObject.Find("DialogueManager");
+        canvas = GameObject.Find("Canvas");
 
         playerObject = GameObject.Find("Player");
         GameObject leftWaypoint = new GameObject();
@@ -53,9 +56,53 @@ public class interactionLogic : MonoBehaviour
         
     }
 
+    void OnMouseOver()
+    {
+        //Choose Behaviour Type
+        if (canTalk == true)
+        {
+            defaultBehaviourType = "Talk";
+            canvas.GetComponent<UIScript>().pointerTextText = "Talk";
+        } else if (canLook == true)
+        {
+            defaultBehaviourType = "Look";
+            canvas.GetComponent<UIScript>().pointerTextText = "Examine";
+        }
+        //Check distance to player and show text
+        if (playerObject.GetComponent<playerMovement>().canInteract == true)
+        {
+            canvas.GetComponent<UIScript>().showPointerText();
+        }
+    }
 
+    void OnMouseExit()
+    {
+        canvas.GetComponent<UIScript>().hidePointerText();
+    }
+
+    void OnMouseDown()
+    {
+        if (playerObject.GetComponent<playerMovement>().canInteract == true && canvas.GetComponent<UIScript>().radialActive == false)
+        {
+            playerObject.GetComponent<playerMovement>().DeactivatePlayer();
+            defaultBehaviour();
+        }
+    }
+
+    public void defaultBehaviour()
+    {
+        canvas.GetComponent<UIScript>().hidePointerText();
+        if (defaultBehaviourType == "Talk")
+        {
+            TalkLogic();
+        }
+
+        if (defaultBehaviourType == "Look")
+        {
+            LookLogic();
+        }
+    }
     //Logics
-
         //Looking
         public void LookLogic()
         {
@@ -66,6 +113,7 @@ public class interactionLogic : MonoBehaviour
             dialogueManagerObj.GetComponent<inkExample>().StartStory();
             dialogueManagerObj.GetComponent<inkExample>().showDialogueGUI();
             playerObject.GetComponent<playerMovement>().DeactivatePlayer();
+            canvas.GetComponent<UIScript>().hidePointerText();
             
         }
 
@@ -74,6 +122,7 @@ public class interactionLogic : MonoBehaviour
         {
             Debug.Log("Initiating conversation with " + displayName);
             InteractionZone.SetActive(true);
+            canvas.GetComponent<UIScript>().hidePointerText();
             if (playerObject.transform.position.x <= transform.position.x)
             {
                 playerObject.GetComponent<playerMovement>().destination = new Vector3(gameObject.transform.position.x - radius, gameObject.transform.position.y, gameObject.transform.position.z);
@@ -93,6 +142,7 @@ public class interactionLogic : MonoBehaviour
             dialogueManagerObj.GetComponent<inkExample>().StartStory();
             dialogueManagerObj.GetComponent<inkExample>().showDialogueGUI();
             deactivateInteraction();
+            canvas.GetComponent<UIScript>().hidePointerText();
         }
 
         //Deactivate Interaction Zones
